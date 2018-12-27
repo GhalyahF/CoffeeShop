@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import UserSignUp, UserLogin
+from .forms import UserSignUp, UserLogin, CoffeeForm
 from django.contrib.auth import authenticate,login,logout
 
 
@@ -48,3 +48,37 @@ def userlogin(request):
 def userlogout(request):
     logout(request)
     return redirect("/")
+
+
+
+def coffee_price(instance):
+    total_price = instance.bean.price + instance.roast.price + (instance.espresso_shots*Decimal(0.250))
+    if instance.steamed_milk:
+        total_price+= Decimal(0.100)
+    if instance.powders.all().count()>0:
+        for powder in instance.powders.all():
+            total_price+= powder.price
+    if instance.syrups.all().count()>0:
+        for syrup in instance.syrups.all():
+            total_price+= syrup.price
+    return total_price
+
+
+def create_coffee(request):
+    if not request.user.is_authenticated():
+        return redirect("mycoffee:login")
+    form = CoffeeForm()
+    if request.method == "POST":
+        form = CoffeeForm(request.POST)
+        if form.is_valid():
+            coffee = form.save(commit=False)
+            coffee.user = request.user
+            coffee.save()
+            form.save_m2m()
+            coffee.price = coffee_price(coffee)
+            coffee.save()
+            return redirect('/')
+    context{
+    'form': form,
+    }
+    return render(request, 'create_coffee.html', context)
