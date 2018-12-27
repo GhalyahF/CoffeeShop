@@ -9,4 +9,5 @@ urlpatterns = [
     path('logout/', views.userlogout, name="logout"),
 
     path('create_coffee/', views.create_coffee, name='create_coffee'),
+    path('ajax_price/', views.ajax_price, name="ajax_price")
 ]
