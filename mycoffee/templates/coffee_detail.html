@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+<div class="col-sm-12">
+    <div class="thumbnail text-center">
+        <div class="caption">
+            <h3>{{coffee.name}}</h3>
+            <p>Coffee Bean: {{coffee.bean}}</p>
+            <p>Roast: {{coffee.roast}}</p>
+            <p># of espresso shots: {{coffee.espresso_shots}}</p>
+            <p>Water ammount: {{coffee.water}} ml.</p>
+            <p>Steamed Milk: {% if coffee.steamed_milk %}Added {% else %}No Milk {% endif %}</p>
+            <p>Foam: {{coffee.foam}} cm.</p>
+            {% if coffee.syrup.all.count > 0 %}
+                <p>Syrups Added: {% for syrup in coffee.syrups.all %} {{syrup.name}}{% endfor %}</p>
+            {% endif %}
+            {% if coffee.powder.all.count > 0 %}
+                <p>Powders Added: {% for powder in coffee.powders.all %} {{powder.name}}{% endfor %}</p>
+            {% endif %}
+            <p>{{coffee.price}} KWD</p>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock content %}

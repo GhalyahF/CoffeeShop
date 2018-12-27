@@ -1,12 +1,27 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
+from django.http import JsonResponse,Http404
 from .forms import UserSignUp, UserLogin, CoffeeForm
-from .models import Bean, Roast, Syrup, Powder
+from .models import Bean, Roast, Syrup, Powder, Coffee
 from django.contrib.auth import authenticate,login,logout
 import json
 
 
+def coffee_list(request):
+    if not request.user.is_authenticated():
+        return redirect("mycoffee:login")
 
+    coffee_list = Coffee.objects.filter(user=request.user)
+    return render(request, 'coffee_list.html', {'coffee_list': coffee_list})
+
+def coffee_detail(request, coffee_id):
+    if not request.user.is_authenticated():
+        return redirect("mycoffee:login")
+    coffee = Coffee.objects.get(id=coffee_id)
+    if not (request.user == coffee.user or request.user.is_superuser or request.user.is_staff):
+        raise Http404
+    return render(request, 'coffee_detail.html', {'coffee': coffee})
+
+    
 def usersignup(request):
     form= UserSignUp()
     if request.method == 'POST':
