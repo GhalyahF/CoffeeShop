@@ -20,6 +20,11 @@
             {% endif %}
             <p>{{coffee.price}} KWD</p>
         </div>
+        <form action="{% url 'cart:mycart' %}" method="GET">
+                 <input type="hidden" name="item" value="{{coffee.id}}"/>
+                 <input type="number" class="item-qty" name="qty" value="1"/>
+                 <input type="submit" class="btn btn-success" value="Add to Cart"/>
+        </form>
     </div>
 </div>
 </div>

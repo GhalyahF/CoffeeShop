@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row main-content">
+    {% if cart.cartitem_set.count < 1 %}
+      <h1 class='text-center'>Your cart is empty!<small>Please continue shopping.</small></h1>
+    {% else %}
+    <div class="col-sm-8 col-sm-offset-2">
+        <h1>Your Cart:</h1>
+        <table class="table">
+          {% for item in cart.cartitem_set.all %}
+            <tr id="item-{{item.item.id}}">
+                <td>{{item.item.name}}</td>
+                <td>
+                  <form action="." method="GET">
+                      <input type="hidden" name="item" value="{{item.item.id}}"/>
+                      <input type="number" class="item-qty" name="qty" value="{{item.quantity}}"/>
+                      <input type="submit" class="btn btn-info" value="Update item"/>
+                  </form>
+                </td>
+                <td id="item-line-total-{{item.item.id}}">{{item.line_item_total}}</td>
+            </tr>
+
+          {% endfor %}
+
+          <tr>
+            <td colspan="4" class="text-right">Subtotal: <span id = "subtotal" >{{cart.subtotal}}</span></td>
+          </tr>
+          <tr>
+            <td colspan="4" class="text-right">Delivery: <span id = "deliverytotal">{{cart.delivery_total}}</span></td>
+          </tr>
+          <tr>
+            <td colspan="4" class="text-right">Total: <span id = "carttotal">{{cart.total}}</span></td>
+          </tr>
+
+        </table>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

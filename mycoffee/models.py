@@ -30,16 +30,16 @@ class Powder(models.Model):
         return self.name
 
 class Coffee(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete= models.CASCADE)
     name = models.CharField(max_length=120)
     espresso_shots = models.PositiveIntegerField(default=1)
-    bean = models.ForeignKey(Bean)
-    roast = models.ForeignKey(Roast)
+    bean = models.ForeignKey(Bean, on_delete= models.CASCADE)
+    roast = models.ForeignKey(Roast, on_delete= models.CASCADE)
     syrups = models.ManyToManyField(Syrup, blank=True)
     powders = models.ManyToManyField(Powder, blank=True)
-    water = models.FloatField()
+    water = models.DecimalField(max_digits=1, decimal_places=1)
     steamed_milk = models.BooleanField(default=False)
-    foam = models.FloatField()
+    foam = models.DecimalField(max_digits=2, decimal_places=1)
     extra_instructions = models.TextField(null=True, blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=3, null=True)
 

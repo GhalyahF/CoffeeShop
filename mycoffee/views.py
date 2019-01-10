@@ -7,21 +7,21 @@ import json
 
 
 def coffee_list(request):
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return redirect("mycoffee:login")
 
     coffee_list = Coffee.objects.filter(user=request.user)
     return render(request, 'coffee_list.html', {'coffee_list': coffee_list})
 
 def coffee_detail(request, coffee_id):
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return redirect("mycoffee:login")
     coffee = Coffee.objects.get(id=coffee_id)
     if not (request.user == coffee.user or request.user.is_superuser or request.user.is_staff):
         raise Http404
     return render(request, 'coffee_detail.html', {'coffee': coffee})
 
-    
+
 def usersignup(request):
     form= UserSignUp()
     if request.method == 'POST':
@@ -96,7 +96,7 @@ def create_coffee(request):
             coffee.price = coffee_price(coffee)
             coffee.save()
             return redirect('/')
-    context{
+    context={
     'form': form,
     }
     return render(request, 'create_coffee.html', context)

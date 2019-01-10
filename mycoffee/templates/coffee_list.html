@@ -1,6 +1,18 @@
 {% extends "base.html" %}
-
 {% block content %}
+<style>
+#logo{
+  margin-bottom:50px;
+  width: 40%;
+
+}
+</style>
+
+<div class= "container" id= logo>
+  <img src="" />
+
+</div>
+
     <div class="row">
         {% for coffee in coffee_list %}
         <div class="col-sm-4">
@@ -10,8 +22,14 @@
                     <p>{{coffee.price}}</p>
                     <p><a href="{% url 'mycoffee:coffee_detail' coffee_id=coffee.id %}" class="btn btn-primary" role="button">More Details</a>
                 </div>
+                  <form action="{% url 'cart:mycart' %}" method="GET">
+                      <input type="hidden" name="item" value="{{coffee.id}}"/>
+                      <input type="hidden" class="item-qty" name="qty" value="1"/>
+                      <input type="submit" class="btn btn-success" value="Add to Cart"/>
+                    </form>
             </div>
         </div>
         {% endfor %}
     </div>
+
 {% endblock content %}
