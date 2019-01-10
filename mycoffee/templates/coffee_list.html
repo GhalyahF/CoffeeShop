@@ -1,35 +1,66 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
 <style>
-#logo{
-  margin-bottom:50px;
-  width: 40%;
+body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; font-family: 'Overpass', sans-serif; letter-spacing: 0px; font-size: 17px; color: #8d8f90; font-weight: 400; line-height: 32px; background-color: #edefef; }
+h1, h2, h3, h4, h5, h6 { color: #25292a; margin: 0px 0px 10px 0px; font-family: 'Overpass', sans-serif; font-weight: 700; letter-spacing: -1px; line-height: 1; }
+h1 { font-size: 34px; }
+h2 { font-size: 28px; line-height: 38px; }
+h3 { font-size: 22px; line-height: 32px; }
+h4 { font-size: 20px; }
+h5 { font-size: 17px; }
+h6 { font-size: 12px; }
+p { margin: 0 0 20px; line-height: 1.7; }
+p:last-child { margin: 0px; }
+ul, ol { }
+a { text-decoration: none; color: #8d8f90; -webkit-transition: all 0.3s; -moz-transition: all 0.3s; transition: all 0.3s; }
+a:focus, a:hover { text-decoration: none; color: #f85759; }
 
+.page-header { background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)),url("/static/img/coffee.jpg")no-repeat; position:relative; background-size:cover; }
+.page-caption { padding-top: 170px; padding-bottom: 174px; }
+.page-title { font-size: 46px; line-height: 1; color: #fff; font-weight: 600; text-align: center; margin-top: 50px;}
+.card-button{
+  width:50%;
+  margin-bottom: 3px;
 }
+.card{
+  margin-top: 40px;
+  background-color: transparent;
+  border: 6px solid black;
+}
+
 </style>
 
-<div class= "container" id= logo>
-  <img src="" />
-
-</div>
-
-    <div class="row">
-        {% for coffee in coffee_list %}
-        <div class="col-sm-4">
-            <div class="thumbnail">
-                <div class="caption">
-                    <h3>{{coffee.name}}</h3>
-                    <p>{{coffee.price}}</p>
-                    <p><a href="{% url 'mycoffee:coffee_detail' coffee_id=coffee.id %}" class="btn btn-primary" role="button">More Details</a>
+<!-- page-header -->
+    <div class="page-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-caption">
+                        <h1 class="page-title">Django's Coffee</h1>
+                    </div>
                 </div>
-                  <form action="{% url 'cart:mycart' %}" method="GET">
-                      <input type="hidden" name="item" value="{{coffee.id}}"/>
-                      <input type="hidden" class="item-qty" name="qty" value="1"/>
-                      <input type="submit" class="btn btn-success" value="Add to Cart"/>
-                    </form>
             </div>
         </div>
-        {% endfor %}
     </div>
+    <!-- /.page-header-->
+  {% for coffee in coffee_list %}
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">{{coffee.name}}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">{{coffee.price}}</h6>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href="{% url 'mycoffee:coffee_detail' coffee_id=coffee.id %}" class="btn btn-primary card-button" role="button">Details</a>
+      <form action="{% url 'cart:mycart' %}" method="GET">
+          <input type="hidden" name="item" value="{{coffee.id}}"/>
+          <input type="hidden" class="item-qty" name="qty" value="1"/>
+          <input type="submit" class="btn btn-success card-button" value="Add to Cart"/ >
+        </form>
+    </div>
+</div>
+  {% endfor %}
+
+
+
 
 {% endblock content %}
