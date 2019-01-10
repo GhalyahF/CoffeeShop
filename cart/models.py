@@ -55,3 +55,34 @@ def delivery_and_total(sender, instance, *args, **kwargs):
     instance.total = total
 
 pre_save.connect(delivery_and_total, sender= Cart)
+
+
+
+class City(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+class UserAddress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=120)
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    block = models.CharField(max_length=3)
+    avenue = models.PositiveIntegerField(blank=True, null=True)
+    street = models.CharField(max_length=255)
+    building_number = models.PositiveIntegerField()
+    floor = models.CharField(max_length=3, null=True, blank=True)
+    apt_number = models.PositiveIntegerField(null=True, blank=True)
+    extra_directions = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username
+
+class Order(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    address = models.ForeignKey(UserAddress, null=True, blank=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.user.email)
